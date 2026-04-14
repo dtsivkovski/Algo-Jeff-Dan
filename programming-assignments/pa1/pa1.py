@@ -10,7 +10,13 @@ import sys
 
 def solve_horn(formula: Dict[str, Any]) -> Dict[str, Any]:
     """Implement Horn resolution with unit propagation."""
-    print
+    # LAYOUT
+    # make a copy of formula
+    # loop through all rules
+    # check if facts derive result of any rule fully
+    # check if result contradicts any existing rule
+    # if no contradiction, remove this rule and make a new fact
+    # while loop until all rules are resolved or contradiction found
 
     raise NotImplementedError
 
