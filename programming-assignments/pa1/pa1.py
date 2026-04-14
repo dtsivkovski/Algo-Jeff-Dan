@@ -10,6 +10,8 @@ import sys
 
 def solve_horn(formula: Dict[str, Any]) -> Dict[str, Any]:
     """Implement Horn resolution with unit propagation."""
+    print
+
     raise NotImplementedError
 
 
@@ -78,8 +80,9 @@ def format_result(result: Dict[str, Any]) -> str:
 def main() -> None:
     raw = sys.argv[1] if len(sys.argv) > 1 else sys.stdin.read()
     formula = parse_horn_clause_string(raw)
-    result = solve_horn(formula)
-    print(format_result(result))
+    print(formula)
+    # result = solve_horn(formula)
+    # print(format_result(result))
 
 
 if __name__ == '__main__':
