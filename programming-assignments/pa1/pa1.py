@@ -12,13 +12,18 @@ def solve_horn(formula: Dict[str, Any]) -> Dict[str, Any]:
     """Implement Horn resolution with unit propagation."""
     # LAYOUT
     # make a copy of formula
+    is_contradiction = False
+    formula_copy = formula.copy()
+    print(formula_copy)
     # loop through all rules
+    while (not is_contradiction) and (not formula_copy.rules.is_empty()):
+        
+    
     # check if facts derive result of any rule fully
     # check if result contradicts any existing rule
     # if no contradiction, remove this rule and make a new fact
     # while loop until all rules are resolved or contradiction found
-
-    raise NotImplementedError
+    return
 
 
 def parse_horn_clause_string(text: str) -> Dict[str, Any]:
@@ -86,9 +91,8 @@ def format_result(result: Dict[str, Any]) -> str:
 def main() -> None:
     raw = sys.argv[1] if len(sys.argv) > 1 else sys.stdin.read()
     formula = parse_horn_clause_string(raw)
-    print(formula)
-    # result = solve_horn(formula)
-    # print(format_result(result))
+    result = solve_horn(formula)
+    print(format_result(result))
 
 
 if __name__ == '__main__':
