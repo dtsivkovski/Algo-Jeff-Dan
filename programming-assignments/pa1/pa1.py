@@ -11,7 +11,6 @@ import sys
 
 def solve_horn(formula: Dict[str, Any]) -> Dict[str, Any]:
     """Implement Horn resolution with unit propagation."""
-    # LAYOUT
     # make a copy of formula
     is_contradiction = False
     formula_copy = formula.copy()
@@ -37,12 +36,13 @@ def solve_horn(formula: Dict[str, Any]) -> Dict[str, Any]:
                 else:
                     break
 
-            if num_confirmed_vars == len(rule['body']): # if the rule is solved from facts, add that rule to facts
+            if num_confirmed_vars == len(rule['body']): # check if the rule is solved/contradicted by facts
                 # contradiction check
                 if rule['head'] is None:
                     is_contradiction = True
                     return { 'satisfiable' : False }
 
+                # updating the known facts with a solved rule
                 formula_copy['facts'].append(rule['head'])
                 formula_copy['rules'].remove(rule)
                 action_taken = True
@@ -51,6 +51,7 @@ def solve_horn(formula: Dict[str, Any]) -> Dict[str, Any]:
         if action_taken is False:
             break
 
+    # if we haven't tripped any contradiction checks, after succesfully going through the entire formula, we return that it is satisfiable
     return { 'satisfiable' : True , 'true_vars' : formula_copy['facts'] }
 
 
