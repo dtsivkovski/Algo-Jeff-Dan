@@ -21,7 +21,9 @@ def solve_horn(formula: Dict[str, Any]) -> Dict[str, Any]:
         for i in range(0, len(formula_copy.rules)): # loop through all rules
             rule = formula_copy.rules[i]
             num_confirmed_vars = 0
-            for var in rule.body: # check to see if all variables in a rule exists in facts
+
+            # check to see if all variables in a rule exists in facts
+            for var in rule.body:
                 if var in facts:
                     num_confirmed_vars += 1
                 elif:
