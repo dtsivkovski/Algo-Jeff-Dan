@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from typing import Any, Dict, List
+from copy import deepcopy # reference -https://docs.python.org/3/library/copy.html
 import re
 import sys
 
@@ -16,32 +17,43 @@ def solve_horn(formula: Dict[str, Any]) -> Dict[str, Any]:
     formula_copy = formula.copy()
     print(formula_copy)
     # loop through all rules
-    while (not is_contradiction) and (not len(formula_copy['rules']) is 0):
+    while (not is_contradiction) and (len(formula_copy['rules']) != 0):
+
+        # flag to check if algorithm has done something
+        action_taken = False
+
+        # snapshot current rules so we don't mess up loop when removing a rule
+        rules_snap = list(formula_copy['rules'])
+
+
         # check if facts derive result of any rule fully
-        for i in range(0, len(formula_copy['rules'])): # loop through all rules
-            rule = formula_copy['rules'][i]
+        for rule in rules_snap: # loop through all rules
             num_confirmed_vars = 0
 
-
-
             # check to see if all variables in a rule exists in facts
-            for var in rule.body:
-                if var in facts:
+            for var in rule['body']:
+                if var in formula_copy['facts']:
                     num_confirmed_vars += 1
                 else:
                     break
 
-            if num_confirmed_vars == len(rules.body): # if the rule is solved from facts, add that rule to facts
+            if num_confirmed_vars == len(rule['body']): # if the rule is solved from facts, add that rule to facts
                 # contradiction check
-                if rule.head is None:
-                    is_contradiction = true
+                if rule['head'] is None:
+                    is_contradiction = True
                     return { 'satisfiable' : False }
 
-                formula_copy.facts.append(rule.head)
-                formula_copy.rules.remove(rule)
-                i -= 1
+                formula_copy['facts'].append(rule['head'])
+                formula_copy['rules'].remove(rule)
+                action_taken = True
 
-    return { 'satisfiable' : True , 'true_vars' : formula_copy.facts }
+        # break loop if nothing happened
+        if action_taken is False:
+            break
+        
+        
+
+    return { 'satisfiable' : True , 'true_vars' : formula_copy['facts'] }
 
 
 def parse_horn_clause_string(text: str) -> Dict[str, Any]:
