@@ -17,9 +17,22 @@ def solve_horn(formula: Dict[str, Any]) -> Dict[str, Any]:
     print(formula_copy)
     # loop through all rules
     while (not is_contradiction) and (not formula_copy.rules.is_empty()):
-        
+        # check if facts derive result of any rule fully
+        for i in range(0, len(formula_copy.rules)): # loop through all rules
+            rule = formula_copy.rules[i]
+            num_confirmed_vars = 0
+            for var in rule.body: # check to see if all variables in a rule exists in facts
+                if var in facts:
+                    num_confirmed_vars += 1
+                elif:
+                    break
+
+            if num_confirmed_vars == len(rules.body): # if the rule is solved from facts, add that rule to facts
+                i -= 1
+                formula_copy.facts.append(rule.head)
+                formula_copy.rules.remove(rule)
+
     
-    # check if facts derive result of any rule fully
     # check if result contradicts any existing rule
     # if no contradiction, remove this rule and make a new fact
     # while loop until all rules are resolved or contradiction found
