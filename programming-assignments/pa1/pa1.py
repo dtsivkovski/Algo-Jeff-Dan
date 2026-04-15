@@ -50,8 +50,6 @@ def solve_horn(formula: Dict[str, Any]) -> Dict[str, Any]:
         # break loop if nothing happened
         if action_taken is False:
             break
-        
-        
 
     return { 'satisfiable' : True , 'true_vars' : formula_copy['facts'] }
 
