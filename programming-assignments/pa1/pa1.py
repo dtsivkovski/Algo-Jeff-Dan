@@ -16,29 +16,32 @@ def solve_horn(formula: Dict[str, Any]) -> Dict[str, Any]:
     formula_copy = formula.copy()
     print(formula_copy)
     # loop through all rules
-    while (not is_contradiction) and (not formula_copy.rules.is_empty()):
+    while (not is_contradiction) and (not len(formula_copy['rules']) is 0):
         # check if facts derive result of any rule fully
-        for i in range(0, len(formula_copy.rules)): # loop through all rules
-            rule = formula_copy.rules[i]
+        for i in range(0, len(formula_copy['rules'])): # loop through all rules
+            rule = formula_copy['rules'][i]
             num_confirmed_vars = 0
+
+
 
             # check to see if all variables in a rule exists in facts
             for var in rule.body:
                 if var in facts:
                     num_confirmed_vars += 1
-                elif:
+                else:
                     break
 
             if num_confirmed_vars == len(rules.body): # if the rule is solved from facts, add that rule to facts
-                i -= 1
+                # contradiction check
+                if rule.head is None:
+                    is_contradiction = true
+                    return { 'satisfiable' : False }
+
                 formula_copy.facts.append(rule.head)
                 formula_copy.rules.remove(rule)
+                i -= 1
 
-    
-    # check if result contradicts any existing rule
-    # if no contradiction, remove this rule and make a new fact
-    # while loop until all rules are resolved or contradiction found
-    return
+    return { 'satisfiable' : True , 'true_vars' : formula_copy.facts }
 
 
 def parse_horn_clause_string(text: str) -> Dict[str, Any]:
