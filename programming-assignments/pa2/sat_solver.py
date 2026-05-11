@@ -122,9 +122,33 @@ def sat_solve(clauses, assignment):
     # - if propagation finds a contradiction, return None
     # - if no clauses remain, return the assignment
     # - otherwise choose a variable and recursively try True and False
-    unit_propagate(clauses, assignment)
 
-    raise NotImplementedError
+    # propagate clauses and check contradiction or solution
+    propagated = unit_propagate(clauses, assignment)
+    if propagated is None:
+        return None
+    if len(propagated) == 0:
+        return assignment
+
+    # choose a variable to try values on
+    variable = choose_variable(propagated, assignment)
+    if variable is None:
+        return None
+
+    # try true val
+    assignment[variable] = True
+    result = sat_solve(propagated, assignment.copy())
+    if result is not None:
+        return result
+
+    # try false val
+    assignment[variable] = False
+    result = sat_solve(propagated, assignment.copy())
+    if result is not None:
+        return result
+
+    # no solution found
+    return None
 
 
 def print_result(assignment):
@@ -137,7 +161,6 @@ def main():
     """Run the solver from the command line on a CNF formula."""
     raw = sys.argv[1] if len(sys.argv) > 1 else sys.stdin.read()
     clauses = ast.literal_eval(raw)
-    print(clauses) # TODO: remove later
     print_result(sat_solve(clauses, {}))
 
 
