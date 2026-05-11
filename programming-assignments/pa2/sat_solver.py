@@ -77,8 +77,24 @@ def unit_propagate(clauses, assignment):
     # - look for clauses of length 1
     # - force the corresponding variable assignment
     # - repeat until no new unit clauses appear
-    raise NotImplementedError
 
+    # check for simplified clause
+    simplified = simplify(clauses, assignment)
+    if simplified is None:
+        return None
+
+    # check for unit clauses
+    for clause in simplified:
+        # check for unit clause
+        if len(clause) == 1:
+            literal = clause[0]
+            variable = literal_variable(literal)
+            value = literal_required_value(literal)
+            # add variable assignment and propagate again
+            assignment[variable] = value
+            return unit_propagate(simplified, assignment)
+
+    return simplified
 
 def choose_variable(clauses, assignment):
     """Choose an unassigned variable to branch on.
@@ -106,6 +122,8 @@ def sat_solve(clauses, assignment):
     # - if propagation finds a contradiction, return None
     # - if no clauses remain, return the assignment
     # - otherwise choose a variable and recursively try True and False
+    unit_propagate(clauses, assignment)
+
     raise NotImplementedError
 
 
@@ -119,6 +137,7 @@ def main():
     """Run the solver from the command line on a CNF formula."""
     raw = sys.argv[1] if len(sys.argv) > 1 else sys.stdin.read()
     clauses = ast.literal_eval(raw)
+    print(clauses) # TODO: remove later
     print_result(sat_solve(clauses, {}))
 
 
