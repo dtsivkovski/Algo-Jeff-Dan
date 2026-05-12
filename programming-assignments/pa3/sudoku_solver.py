@@ -41,7 +41,46 @@ def sudoku_encode(grid):
     # - every column contains every digit
     # - every 3 x 3 box contains every digit
     # - every given number becomes a unit clause
-    raise NotImplementedError
+
+    clauses = []
+
+    # loop through grid and check exactly one per cell
+    for row in range(1, 10):
+        for col in range(1, 10):
+            # get all literals for current row/col combination
+            literals = [varnum(row, col, digit) for digit in range(1, 10)]
+            clauses.extend(exactly_one(literals))
+    
+    # check exactly one per row
+    for row in range(1, 10):
+        for digit in range(1, 10):
+            # get all literals for current row/digit combination
+            literals = [varnum(row, col, digit) for col in range(1, 10)]
+            clauses.extend(exactly_one(literals))
+
+    # check exactly one per column
+    for col in range(1, 10):
+        for digit in range(1, 10):
+            # get all literals for current col/digit combination
+            literals = [varnum(row, col, digit) for row in range(1, 10)]
+            clauses.extend(exactly_one(literals))
+
+    # check exactly one per 3x3 box
+    for box_row in range(3):
+        for box_col in range(3):
+            for digit in range(1, 10):
+                # get all literals for current box/digit combination
+                literals = [varnum(row, col, digit) for row in range(box_row * 3 + 1, box_row * 3 + 4) for col in range(box_col * 3 + 1, box_col * 3 + 4)]
+                clauses.extend(exactly_one(literals))
+
+    # get unit clauses for given numbers
+    for row in range(1, 10):
+        for col in range(1, 10):
+            digit = grid[row - 1][col - 1]
+            if digit != 0:
+                clauses.append([varnum(row, col, digit)])
+
+    return clauses
 
 
 def decode_solution(assignment):
@@ -59,7 +98,15 @@ def decode_solution(assignment):
 def solve(grid):
     """Return a solved Sudoku grid, or None if the puzzle is unsolvable."""
     # TODO: Encode the grid, call sat_solve, and decode the result.
-    raise NotImplementedError
+
+    # encode grid
+    clauses = sudoku_encode(grid)
+
+    # solve SAT
+    assignment = sat_solve(clauses, {})
+
+    # decode solution
+    return decode_solution(assignment) if assignment is not None else None
 
 
 def print_result(solution):
