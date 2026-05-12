@@ -70,13 +70,6 @@ def unit_propagate(clauses, assignment):
 
     This is one of the key algorithmic parts of the assignment.
     """
-    # TODO: Implement unit propagation.
-    #
-    # Hint:
-    # - call simplify
-    # - look for clauses of length 1
-    # - force the corresponding variable assignment
-    # - repeat until no new unit clauses appear
 
     # check for simplified clause
     simplified = simplify(clauses, assignment)
@@ -115,13 +108,6 @@ def sat_solve(clauses, assignment):
 
     Return a satisfying assignment if one exists. Return None otherwise.
     """
-    # TODO: Implement the recursive SAT solver.
-    #
-    # Hint:
-    # - first run unit_propagate
-    # - if propagation finds a contradiction, return None
-    # - if no clauses remain, return the assignment
-    # - otherwise choose a variable and recursively try True and False
 
     # propagate clauses and check contradiction or solution
     propagated = unit_propagate(clauses, assignment)
