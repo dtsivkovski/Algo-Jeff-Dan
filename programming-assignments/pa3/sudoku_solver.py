@@ -33,14 +33,6 @@ def sudoku_encode(grid):
 
     A 0 in the grid means an empty cell.
     """
-    # TODO: Build and return the CNF clauses for the Sudoku constraints.
-    #
-    # Hint:
-    # - every cell has exactly one digit
-    # - every row contains every digit
-    # - every column contains every digit
-    # - every 3 x 3 box contains every digit
-    # - every given number becomes a unit clause
 
     clauses = []
 
@@ -97,7 +89,6 @@ def decode_solution(assignment):
 
 def solve(grid):
     """Return a solved Sudoku grid, or None if the puzzle is unsolvable."""
-    # TODO: Encode the grid, call sat_solve, and decode the result.
 
     # encode grid
     clauses = sudoku_encode(grid)
